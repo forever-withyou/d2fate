@@ -1,0 +1,41 @@
+"DOTAAbilities"
+{
+	"mordred_q_charge"
+	{
+		"BaseClass"										"ability_lua"
+		"ScriptFile"									"abilities/mordred/mordred_q_charge"
+		"AbilityTextureName"							"custom/nero_fiery_finale"
+		
+		"AbilityBehavior"								"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"AbilityUnitTargetTeam"							"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitTargetType"							"DOTA_UNIT_TARGET_ALL"
+		"AbilityUnitDamageType"							"DAMAGE_TYPE_PHYSICAL"
+		
+		"MaxLevel"										"5"
+		"RequiredLevel"									"26"
+		"LevelsBetweenUpgrades"							"1"
+		
+		"AbilityCastPoint"								"0.3"
+		"AbilityCastRange"								"1000"
+		"AbilityCastRangeBuffer"						"200"
+		
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"								"FIELD_INTEGER"
+				"damage"								"150 250 350 450 550"
+			}
+			"02"
+			{
+				"var_type"								"FIELD_INTEGER"
+				"slow"									"40 50 60 70 80"
+			}
+			"03"
+			{
+				"var_type"								"FIELD_FLOAT"
+				"slow_duration"							"8.0"
+			}
+		}
+	}
+}

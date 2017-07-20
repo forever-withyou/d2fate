@@ -1,0 +1,9 @@
+"DOTAAbilities"
+{
+	"mordred_q_throw"
+	{
+		"BaseClass"										"ability_lua"
+		"ScriptFile"									"abilities/mordred/mordred_q_throw"
+		"AbilityTextureName"							"custom/true_assassin_dirk"
+	}
+}

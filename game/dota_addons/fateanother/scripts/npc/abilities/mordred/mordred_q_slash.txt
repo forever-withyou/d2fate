@@ -1,0 +1,57 @@
+"DOTAAbilities"
+{
+	"mordred_q_slash"
+	{
+		"BaseClass"										"ability_lua"
+		"ScriptFile"									"abilities/mordred/mordred_q_slash"
+		"AbilityTextureName"							"custom/diarmuid_gae_dearg"
+		
+		"AbilityBehavior"								"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityUnitDamageType"							"DAMAGE_TYPE_PHYSICAL"
+		
+		"AbilityCastAnimation"							"ACT_DOTA_ATTACK"
+		"AnimationPlaybackRate"							"2"
+		
+		"MaxLevel"										"5"
+		"RequiredLevel"									"1"
+		"LevelsBetweenUpgrades"							"1"
+		
+		"AbilityCastPoint"								"0.0"
+		"AbilityManaCost"								"100"
+		"AbilityCooldown"								"15"
+		
+		"precache"
+		{
+			"particle"									"particles/econ/items/sven/sven_ti7_sword/sven_ti7_sword_spell_great_cleave_gods_strength.vpcf"
+		}
+		
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"								"FIELD_INTEGER"
+				"moves"									"2 2 3 3 4"
+			}
+			"02"
+			{
+				"var_type"								"FIELD_INTEGER"
+				"damage"								"200 300 400 500 600"
+			}
+			"03"
+			{
+				"var_type"								"FIELD_FLOAT"
+				"ad_scaling"							"0.5"
+			}
+			"04"
+			{
+				"var_type"								"FIELD_INTEGER"
+				"start_radius"							"80"
+			}
+			"05"
+			{
+				"var_type"								"FIELD_INTEGER"
+				"end_radius"							"210"
+			}
+		}
+	}
+}

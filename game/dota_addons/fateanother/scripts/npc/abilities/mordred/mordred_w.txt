@@ -1,0 +1,43 @@
+"DOTAAbilities"
+{
+	"mordred_w"
+	{
+		"BaseClass"										"ability_lua"
+		"ScriptFile"									"abilities/mordred/mordred_w"
+		"AbilityTextureName"							"custom/saber_instinct"
+		
+		"AbilityBehavior"								"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		
+		"MaxLevel"										"5"
+		"RequiredLevel"									"1"
+		"LevelsBetweenUpgrades"							"1"
+		
+		"AbilityCastPoint"								"0.0"
+		
+		"AbilityCooldown"								"20"
+		
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"								"FIELD_INTEGER"
+				"dashes"								"1 1 2 2 3"
+			}
+			"02"
+			{
+				"var_type"								"FIELD_INTEGER"
+				"dash_range"							"300 350 400 450 500"
+			}
+			"03"
+			{
+				"var_type"								"FIELD_INTEGER"
+				"ms_increase"							"5 10 15 20 25"
+			}
+			"04"
+			{
+				"var_type"								"FIELD_INTEGER"
+				"slow"									"75 60 45 30 15"
+			}
+		}
+	}
+}
