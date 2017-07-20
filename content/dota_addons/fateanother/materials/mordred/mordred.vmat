@@ -1,0 +1,53 @@
+// THIS FILE IS AUTO-GENERATED
+
+Layer0
+{
+	shader "global_lit_simple.vfx"
+
+	//---- 2-Sided Rendering ----
+	F_RENDER_BACKFACES 1
+
+	//---- Ambient Occlusion Map ----
+	F_AO_MAP 1
+
+	//---- Normal Maps ----
+	F_NORMAL_MAP 1
+
+	//---- Specular ----
+	F_SPECULAR 1
+
+	//---- Translucent ----
+	F_ALPHA_TEST 1
+
+	//---- Ambient Occlusion Map ----
+	g_flGradientBottom "-372.364"
+	g_flGradientColorMultiplier "1.000"
+	g_flGradientTop "200.000"
+	g_vAmbientOcclusionColor "[0.000000 0.000000 0.000000 0.000000]"
+	g_vGradientBottomColor "[0.000000 0.000000 0.000000 0.000000]"
+	g_vGradientTopColor "[1.000000 1.000000 1.000000 0.000000]"
+	TextureAmbientOcclusionMap "materials/mordred/mordred_ao.tga"
+
+	//---- Color ----
+	g_vColorTint "[1.000000 1.000000 1.000000 0.000000]"
+	g_vTexCoordOffset "[0.000 0.000]"
+	g_vTexCoordScale "[1.000 1.000]"
+	TextureColor "materials/mordred/mordred.tga"
+
+	//---- Normal Map ----
+	g_flBumpStrength "1.200"
+	TextureNormal "materials/mordred/mordred_normal.tga"
+
+	//---- Self Illum ----
+	TextureSelfIllumMask "materials/default/default_selfillum.tga"
+
+	//---- Specular ----
+	g_flSpecularBloom "2.020"
+	g_flSpecularIntensity "1.343"
+	TextureBloom "materials/mordred/mordred_specular.tga"
+	TextureReflectance "materials/default/default_refl.tga"
+
+	//---- Translucent ----
+	g_flAlphaTestReference "0.560"
+	TextureTranslucency "materials/mordred/mordred_alpha.tga"
+}
