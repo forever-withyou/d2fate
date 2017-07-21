@@ -18,6 +18,7 @@ require('libraries/attachments')
 require('hero_selection')
 require('libraries/servantstats')
 require('libraries/alternateparticle')
+require('unit_voice')
 
 
 _G.IsPickPhase = true
@@ -981,6 +982,7 @@ function FateGameMode:OnHeroInGame(hero)
     -- Initialize stuffs
     hero:SetCustomDeathXP(0)
     hero.bFirstSpawned = true
+	UnitVoice(hero)
     hero.PresenceTable = {}
     hero.bIsDmgPopupDisabled = false
     hero.bIsAlertSoundDisabled = false
@@ -1662,14 +1664,14 @@ function FateGameMode:OnEntityKilled( keys )
                 killedUnit.DeathCount = killedUnit.DeathCount + 1
             end
             -- Add to kill count if victim is Ruler
-            if killedUnit:GetName() == "npc_dota_hero_mirana" and killedUnit.IsSaintImproved then
-                --print("killed ruler with attribute. current kills: " .. killerEntity:GetKills() .. ". adding 2 extra kills...")
-                if _G.GameMap == "fate_elim_6v6" then
-                    killerEntity:IncrementKills(1)
-                    killerEntity:IncrementKills(1)
-                end
+           -- if killedUnit:GetName() == "npc_dota_hero_mirana" and killedUnit.IsSaintImproved then
+               -- --print("killed ruler with attribute. current kills: " .. killerEntity:GetKills() .. ". adding 2 extra kills...")
+           --     if _G.GameMap == "fate_elim_6v6" then
+                 --   killerEntity:IncrementKills(1)
+                --    killerEntity:IncrementKills(1)
+              --  end
 
-            end
+           -- end
             -- check if unit can receive a shard
             if killedUnit.DeathCount == 7 then
                 if killedUnit.ShardAmount == nil then
@@ -2470,19 +2472,19 @@ function FateGameMode:InitializeRound()
                 end
             end)
 
-            if nRadiantAlive > 6 then nRadiantAlive = 6 end
-            if nDireAlive > 6 then nDireAlive = 6 end
+           -- if nRadiantAlive > 6 then nRadiantAlive = 6 end
+           -- if nDireAlive > 6 then nDireAlive = 6 end
             -- if remaining players are equal
             if nRadiantAlive == nDireAlive then
                 -- Default Radiant Win
-                if self.nRadiantScore < self.nDireScore and nRadiantAlive == 6 then
-                    self:FinishRound(true,3)
+                if self.nRadiantScore < self.nDireScore
+                    then self:FinishRound(true,3)
                 -- Default Dire Win
-                elseif self.nRadiantScore > self.nDireScore and nRadiantAlive == 6 then
-                    self:FinishRound(true,4)
+                elseif self.nRadiantScore > self.nDireScore
+                    then  self:FinishRound(true,4)
                 -- Draw
-                elseif self.nRadiantScore == self.nDireScore or nRadiantAlive <= 5 then
-                    self:FinishRound(true, 2)
+                elseif self.nRadiantScore == self.nDireScore
+                    then self:FinishRound(true, 2)
                 end
             -- if remaining players are not equal
             elseif nRadiantAlive > nDireAlive then
