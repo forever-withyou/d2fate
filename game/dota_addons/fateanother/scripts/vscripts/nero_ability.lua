@@ -181,7 +181,6 @@ function OnGBStart(keys)
 	caster:EmitSound("Hero_DoomBringer.ScorchedEarthAura")
 	Timers:CreateTimer(0.033, function()
 		keys.ability:ApplyDataDrivenModifier(caster, caster, "modifier_gladiusanus_blauserum",{})
-		caster:SetModifierStackCount("modifier_gladiusanus_blauserum", caster, 1)
 	end)
 	Timers:CreateTimer(0.5,function()
 		if keys.ability:IsChanneling() then
@@ -218,7 +217,7 @@ function OnGBStrike(keys)
 	caster:EmitSound("Hero_Clinkz.DeathPact")
 	if caster.IsPTBAcquired then
 		local targets = FindUnitsInRadius(caster:GetTeam(), target:GetAbsOrigin(), nil, 400, DOTA_UNIT_TARGET_TEAM_ENEMY, DOTA_UNIT_TARGET_ALL, 0, FIND_CLOSEST, false)
-		local damage = caster:GetAgility() * 5 * caster:GetModifierStackCount("modifier_gladiusanus_blauserum", caster) / 4
+		local damage = caster:GetAgility() * 5
 		local stun = caster:GetStrength() * 0.01 + 0.35
 		for k,v in pairs(targets) do
 			DoDamage(caster, v, damage, DAMAGE_TYPE_MAGICAL, 0, keys.ability, false)
@@ -242,8 +241,6 @@ function OnGBStrike(keys)
 		ParticleManager:DestroyParticle( particle, false )
 		ParticleManager:ReleaseParticleIndex( particle )
 	end)
-
-	caster:RemoveModifierByName("modifier_gladiusanus_blauserum")
 
 	-- add effect and handle attribute
 end
@@ -529,6 +526,9 @@ function OnNeroComboStart(keys)
 	local radius = caster:FindAbilityByName("nero_aestus_domus_aurea"):GetSpecialValueFor("radius")
 	local flamePillarRadius = 300
 
+	caster:FindAbilityByName("nero_tres_fontaine_ardent"):ApplyDataDrivenModifier(caster, caster, "modifier_tres_fontaine_ardent", {})
+
+
 	-- Set master's combo cooldown
 	local masterCombo = caster.MasterUnit2:FindAbilityByName(keys.ability:GetAbilityName())
 	masterCombo:EndCooldown()
@@ -734,3 +734,4 @@ function OnGloryAcquired(keys)
     local master = hero.MasterUnit
     master:SetMana(master:GetMana() - keys.ability:GetManaCost(keys.ability:GetLevel()))
 end
+	
