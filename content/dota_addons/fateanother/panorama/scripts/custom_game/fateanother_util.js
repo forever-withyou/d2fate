@@ -26,7 +26,7 @@ function CreateAbilityPanel(panel, unit, abilityIndex, bIsAttribute)
 	abilityPanel.SetAbility(ability, unit, Game.IsInAbilityLearnMode(), bIsAttribute);
 }
 
-function CreateAbilityPanelByName(panel, unit, abilityName, bIsAttribute)
+/*function CreateAbilityPanelByName(panel, unit, abilityName, bIsAttribute)
 {
 	var ability = Entities.GetAbilityByName(unit, abilityName); 
 	var abilityPanel = $.CreatePanel("Panel", panel, "");
@@ -60,4 +60,12 @@ function CreateAbilityPanelByName(panel, unit, abilityName, bIsAttribute)
 	{
 		hotkeyPanel.text = "R";
 	}
+}*/
+
+function CreateAbilityPanelByName(panel, unit, sAbility, bIsAttribute)
+{
+	var ability = Entities.GetAbilityByName(unit, sAbility); 
+	var abilityPanel = $.CreatePanel("Panel", panel, "");
+	abilityPanel.BLoadLayout("file://{resources}/layout/custom_game/fateanother_ability.xml", false, false );
+	abilityPanel.SetAbility(ability, unit, Game.IsInAbilityLearnMode(), bIsAttribute);
 }

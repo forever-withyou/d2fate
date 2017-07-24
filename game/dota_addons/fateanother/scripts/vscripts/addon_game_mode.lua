@@ -1106,7 +1106,8 @@ function FateGameMode:OnHeroInGame(hero)
     local playerData = {
         masterUnit = master2:entindex(),
         shardUnit = master:entindex(),
-        hero = hero:entindex()
+        hero = hero:entindex(),
+		tAttributes = master2.tAttributes,
     }
     --[[-- Create personal stash for hero
     masterStash = CreateUnitByName("master_stash", Vector(4500 + hero:GetPlayerID()*350,-7250,0), true, hero, hero, hero:GetTeamNumber())

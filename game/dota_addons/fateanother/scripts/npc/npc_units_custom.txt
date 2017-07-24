@@ -2185,6 +2185,10 @@
 		// Abilities
 		//----------------------------------------------------------------
 		"AbilityLayout"				"6"
+		//"Ability1"					"master_attribute_list"
+		//"Ability2"					"master_stat_list1"
+		//"Ability3"					"master_stat_list2"
+		//"Ability4"					"master_shard_of_holy_grail"
 
 
 		// Armor

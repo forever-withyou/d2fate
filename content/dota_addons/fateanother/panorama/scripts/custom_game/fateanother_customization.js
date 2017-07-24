@@ -70,10 +70,19 @@ function UpdateAttributeList(data)
 	//$.Msg("panels present. linking abilities...")
 	var queryUnit = data.masterUnit; //Players.GetLocalPlayerPortraitUnit();
 	var queryUnit2 = data.shardUnit;
+	var tAttributes = data.tAttributes;
+	var iAttributes = tAttributes.length;
 
+	$.Msg(tAttributes[1])
+	
 	for(i=0; i<5; i++) {
 		CreateAbilityPanel(attributePanel, queryUnit, i, true);
 	}
+	
+	/*for(var i = 1; i < iAttributes; i++){
+		CreateAbilityPanelByName(attributePanel, queryUnit, tAttributes[i], true)
+	}*/
+	
 	CreateAbilityPanel(cooldownPanel, queryUnit, 5, true);
 	for(i=6; i<14; i++) {
 		CreateAbilityPanel(statPanel, queryUnit, i, true);

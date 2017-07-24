@@ -473,6 +473,8 @@ function AddMasterAbility(master, name)
 	master:AddAbility("master_mana_regen")
 	master:AddAbility("master_movement_speed")
 	master:AddAbility("master_2_passive")
+	master.tAttributes = attributeTable
+	master.tAttributes.attrCount = nil
 end
 
 function LoopThroughAttr(hero, attrTable)
