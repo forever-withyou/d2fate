@@ -544,7 +544,7 @@ function PlayBGM(player)
 end
 
 function LevelAllAbility(hero)
-    for i=0, 14 do
+    for i=0, hero:GetAbilityCount() do
         local ability = hero:GetAbilityByIndex(i)
         if ability == nil then return end
         local level0 = false -- whether ability should be kept level 0 or not
@@ -1745,3 +1745,17 @@ function OnHeroTakeDamage(keys)
     hero.ServStat:takeActualDamage(damageTaken)
 end
 
+
+-- Updates a unit's ability layout with a table.
+function UpdateAbilityLayout(hUnit, tTable)
+	local tAbilities = tTable or hUnit.AbilityLayout
+	if not tAbilities then return end
+	for i = 1, hUnit:GetAbilityCount() do
+		if hUnit:GetAbilityByIndex(i - 1) == nil then
+		elseif i > #tAbilities then
+			hUnit:GetAbilityByIndex(i - 1):SetHidden(true)
+		elseif hUnit:GetAbilityByIndex(i - 1):GetAbilityName() ~= tAbilities[i] then
+			hUnit:SwapAbilities(hUnit:GetAbilityByIndex(i - 1):GetAbilityName(), tAbilities[i], true, true)
+		end
+	end
+end

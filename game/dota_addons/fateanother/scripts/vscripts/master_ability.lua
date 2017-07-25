@@ -473,8 +473,39 @@ function AddMasterAbility(master, name)
 	master:AddAbility("master_mana_regen")
 	master:AddAbility("master_movement_speed")
 	master:AddAbility("master_2_passive")
+	
 	master.tAttributes = attributeTable
+	master.iAttributes = attributeTable.attrCount
 	master.tAttributes.attrCount = nil
+	
+	function master:GetAbilityCount()
+		return 48
+	end
+	
+	local tUnhidden = {
+		"master2_attributes_list",
+		"master2_stats1_list",
+		"master2_stats2_list",
+		"fate_empty1",
+		"fate_empty2",
+		"master2_shards_list",
+	}
+	
+	for i = 0, master:GetAbilityCount() do
+		local hAbility = master:GetAbilityByIndex(i)
+		local bHide = true
+		if not hAbility then return end
+		
+		for k, v in pairs(tUnhidden) do
+			if hAbility:GetAbilityName() == v then
+				bHide = false
+				tUnhidden[k] = nil
+				break
+			end
+		end
+		
+		hAbility:SetHidden(bHide)
+	end
 end
 
 function LoopThroughAttr(hero, attrTable)
@@ -482,10 +513,10 @@ function LoopThroughAttr(hero, attrTable)
         --print("Added " .. attrTable[i])
         hero:AddAbility(attrTable[i])
     end
-    if #attrTable-1 == 4 then
+   --[[ if #attrTable-1 == 4 then
     	hero:AddAbility("fate_empty1")
     	hero:SwapAbilities(attrTable[#attrTable], "fate_empty1", true, true)
-   	end
+   	end]]
     hero.ComboName = attrTable[#attrTable]
     --print(attrTable[#attrTable])
     --hero:SwapAbilities(attrTable[#attrTable], hero:GetAbilityByIndex(4):GetName(), true, true)

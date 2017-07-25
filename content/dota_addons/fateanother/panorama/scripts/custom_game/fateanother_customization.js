@@ -69,27 +69,40 @@ function UpdateAttributeList(data)
 
 	//$.Msg("panels present. linking abilities...")
 	var queryUnit = data.masterUnit; //Players.GetLocalPlayerPortraitUnit();
-	var queryUnit2 = data.shardUnit;
+	var queryUnit2 = data.shardUnit
 	var tAttributes = data.tAttributes;
-	var iAttributes = tAttributes.length;
-
-	$.Msg(tAttributes[1])
+	var iAttributes = data.iAttributes + 1;
 	
-	for(i=0; i<5; i++) {
-		CreateAbilityPanel(attributePanel, queryUnit, i, true);
-	}
+	var tStats = [
+		"master_strength",
+		"master_agility",
+		"master_intelligence",
+		"master_damage",
+		"master_armor",
+		"master_health_regen",
+		"master_mana_regen",
+		"master_movement_speed"
+	];
 	
-	/*for(var i = 1; i < iAttributes; i++){
+	var tShards = [
+		"master_shard_of_avarice",
+		"master_shard_of_anti_magic",
+		"master_shard_of_replenishment",
+		"master_shard_of_prosperity"
+	];
+	
+	for(var i = 1; i < iAttributes; i++){
 		CreateAbilityPanelByName(attributePanel, queryUnit, tAttributes[i], true)
-	}*/
-	
-	CreateAbilityPanel(cooldownPanel, queryUnit, 5, true);
-	for(i=6; i<14; i++) {
-		CreateAbilityPanel(statPanel, queryUnit, i, true);
 	}
-
-	for(i=6; i<10; i++) {
-		CreateAbilityPanel(shardPanel, queryUnit2, i, true);
+	
+	CreateAbilityPanelByName(cooldownPanel, queryUnit, tAttributes[iAttributes], true);
+	
+	for(var i = 0; i < tStats.length; i++){
+		CreateAbilityPanelByName(statPanel, queryUnit, tStats[i], true)
+	}
+	
+	for(var i = 0; i < tShards.length; i++){
+		CreateAbilityPanelByName(shardPanel, queryUnit2, tShards[i], true)
 	}
 }
 

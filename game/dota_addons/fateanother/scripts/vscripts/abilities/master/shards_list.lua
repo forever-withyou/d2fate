@@ -1,0 +1,1 @@
+master2_shards_list = class({})

@@ -1,5 +1,11 @@
 // Dota Heroes File
 
+#base "abilities/master/master2_attributes_list.txt"
+#base "abilities/master/master2_stats1_list.txt"
+#base "abilities/master/master2_stats2_list.txt"
+#base "abilities/master/master2_shards_list.txt"
+#base "abilities/master/master2_close_list.txt"
+
 "DOTAAbilities"
 {
 	"Version"		"1"

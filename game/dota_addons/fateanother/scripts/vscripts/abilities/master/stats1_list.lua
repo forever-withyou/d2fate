@@ -1,0 +1,1 @@
+master2_stats1_list = class({})

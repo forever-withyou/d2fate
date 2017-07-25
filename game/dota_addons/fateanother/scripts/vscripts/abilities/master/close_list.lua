@@ -1,0 +1,1 @@
+master2_close_list = class({})
