@@ -501,10 +501,10 @@ function LoopThroughAttr(hero, attrTable)
         --print("Added " .. attrTable[i])
         hero:AddAbility(attrTable[i])
     end
-   --[[ if #attrTable-1 == 4 then
+    if #attrTable-1 == 4 then
     	hero:AddAbility("fate_empty1")
     	hero:SwapAbilities(attrTable[#attrTable], "fate_empty1", true, true)
-   	end]]
+   	end
     hero.ComboName = attrTable[#attrTable]
     --print(attrTable[#attrTable])
     --hero:SwapAbilities(attrTable[#attrTable], hero:GetAbilityByIndex(4):GetName(), true, true)

@@ -1747,8 +1747,8 @@ end
 
 
 -- Updates a unit's ability layout with a table.
-function UpdateAbilityLayoutOld(hUnit, tTable)
-	local tAbilities = tTable
+function UpdateAbilityLayout(hUnit, tTable)
+	local tAbilities = tTable or hUnit.AbilityLayout
 	if not tAbilities then return end
 	for i = 1, hUnit:GetAbilityCount() do
 		if hUnit:GetAbilityByIndex(i - 1) == nil then
@@ -1758,15 +1758,4 @@ function UpdateAbilityLayoutOld(hUnit, tTable)
 			hUnit:SwapAbilities(hUnit:GetAbilityByIndex(i - 1):GetAbilityName(), tAbilities[i], true, true)
 		end
 	end
-end
-
-function UpdateAbilityLayout(hHero, tAbilities)
-    for i = 1, hHero:GetAbilityCount() do
-        if hHero:GetAbilityByIndex(i - 1) == nil then
-        elseif i > #tAbilities then
-            hHero:GetAbilityByIndex(i - 1):SetHidden(true)
-        elseif hHero:GetAbilityByIndex(i - 1):GetAbilityName() ~= tAbilities[i] then
-            hHero:SwapAbilities(hHero:GetAbilityByIndex(i - 1):GetAbilityName(), tAbilities[i], true, true)
-        end
-    end
 end
