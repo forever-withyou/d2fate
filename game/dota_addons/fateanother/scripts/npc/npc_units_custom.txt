@@ -2190,8 +2190,7 @@
 		"Ability3"					"master2_stats2_list"
 		"Ability4"					"fate_empty1"
 		"Ability5"					"fate_empty2"
-		"Ability6"					"master2_shards_list"
-		"Ability7"					"master2_close_list"
+		"Ability6"					"master2_close_list"
 
 		// Armor
 		//----------------------------------------------------------------

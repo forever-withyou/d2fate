@@ -477,21 +477,9 @@ function AddMasterAbility(master, name)
 	master.tAttributes = attributeTable
 	master.iAttributes = attributeTable.attrCount
 	master.tAttributes.attrCount = nil
+	master.tAttributeLayout = {}
 	
-	function master:GetAbilityCount()
-		return 48
-	end
-	
-	local tUnhidden = {
-		"master2_attributes_list",
-		"master2_stats1_list",
-		"master2_stats2_list",
-		"fate_empty1",
-		"fate_empty2",
-		"master2_shards_list",
-	}
-	
-	for i = 0, master:GetAbilityCount() do
+	--[[for i = 0, master:GetAbilityCount() do
 		local hAbility = master:GetAbilityByIndex(i)
 		local bHide = true
 		if not hAbility then return end
@@ -505,7 +493,7 @@ function AddMasterAbility(master, name)
 		end
 		
 		hAbility:SetHidden(bHide)
-	end
+	end]]
 end
 
 function LoopThroughAttr(hero, attrTable)
