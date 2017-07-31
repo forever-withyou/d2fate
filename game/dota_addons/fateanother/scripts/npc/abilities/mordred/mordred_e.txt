@@ -1,0 +1,19 @@
+"DOTAAbilities"
+{
+    "mordred_e"
+    {
+        "BaseClass"                                     "ability_lua"
+        "ScriptFile"                                    "abilities/mordred/mordred_e"
+        "AbilityTextureName"                            "custom/saber_alter_mana_burst"
+        
+        "AbilityBehavior"                               "DOTA_ABILITY_BEHAVIOR_UNIT_TARGET"
+        
+        "MaxLevel"                                      "5"
+        "RequiredLevel"                                 "3"
+        "LevelsBetweenUpgrades"                         "2"
+        
+        "AbilityCastPoint"                              "0.0"
+        "AbilityManaCost"                               "100"
+        "AbilityCooldown"                               "15"
+    }
+}

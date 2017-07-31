@@ -30,8 +30,10 @@ function mordred_q_slash:OnSpellStart()
 	
 	local pcHit = ParticleManager:CreateParticle("particles/econ/items/sven/sven_ti7_sword/sven_ti7_sword_spell_great_cleave_gods_strength.vpcf", PATTACH_ABSORIGIN, hCaster)
 	ParticleManager:SetParticleControlForward(pcHit, 0, hCaster:GetForwardVector())
+    ParticleManager:ReleaseParticleIndex(pcHit)
 	
 	local pcDust = ParticleManager:CreateParticle("particles/dev/library/base_dust_hit_detail.vpcf", PATTACH_ABSORIGIN, hCaster)
+    ParticleManager:ReleaseParticleIndex(pcDust)
 	
 	hCaster:SwapAbilities("mordred_q_charge", "mordred_q_slash", true, false)
 	hCaster:AddNewModifier(hCaster, self, "modifier_mordred_q", { Duration = 3 })

@@ -1,9 +1,28 @@
 "DOTAAbilities"
 {
-	"mordred_q_throw"
-	{
-		"BaseClass"										"ability_lua"
-		"ScriptFile"									"abilities/mordred/mordred_q_throw"
-		"AbilityTextureName"							"custom/true_assassin_dirk"
-	}
+    "mordred_q_throw"
+    {
+        "BaseClass"                                     "ability_lua"
+        "ScriptFile"                                    "abilities/mordred/mordred_q_throw"
+        "AbilityTextureName"                            "custom/true_assassin_dirk"
+
+        "AbilityBehavior"                               "DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+
+        "AbilityCastAnimation"                          "ACT_DOTA_ATTACK"
+        "AnimationPlaybackRate"                         "2"
+        
+        "MaxLevel"                                      "5"
+        "RequiredLevel"                                 "1"
+        "LevelsBetweenUpgrades"                         "1"
+        
+        "AbilityCastPoint"                              "0.1"
+        "AbilityCastRange"                              "1200"
+        "AbilityManaCost"                               "100"
+        "AbilityCooldown"                               "15"
+        
+        "precache"
+        {
+            "particle"                                  "particles/custom/mordred/sword.vpcf"
+        }
+    }
 }

@@ -5,7 +5,7 @@ function mordred_q_charge:OnSpellStart()
 	local hCaster = self:GetCaster()
 	local hTarget = self:GetCursorTarget()
 	local fTick = 1/30
-	local fSpeed = 1500 * fTick
+	local fSpeed = 1800 * fTick
 	local fSearchRadius = 100
 	local tHitTargets = {}
 	
@@ -36,7 +36,7 @@ function mordred_q_charge:OnSpellStart()
 		local tTargets = FindUnitsInRadius(hCaster:GetTeam(), vGroundPos, nil, fSearchRadius, DOTA_UNIT_TARGET_TEAM_ENEMY, DOTA_UNIT_TARGET_ALL, 0, FIND_ANY_ORDER, false)
 		
 		for k, v in pairs(tTargets) do
-			for key, val in pairs(tHitTargets) do
+			for _, val in pairs(tHitTargets) do
 				if v == val then tTargets[k] = nil end
 			end
 		end
@@ -102,6 +102,7 @@ function mordred_q_charge:Knockback(hCaster, hTarget)
 	local iCounter = 0
 	
 	local pcHit = ParticleManager:CreateParticle("particles/dev/library/base_dust_hit.vpcf", PATTACH_ABSORIGIN, hCaster)
+    ParticleManager:ReleaseParticleIndex(pcHit)
 	
 	Timers:CreateTimer(function()
 		iCounter = iCounter + 1

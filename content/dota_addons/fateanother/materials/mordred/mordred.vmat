@@ -2,52 +2,87 @@
 
 Layer0
 {
-	shader "global_lit_simple.vfx"
+	shader "hero.vfx"
 
 	//---- 2-Sided Rendering ----
 	F_RENDER_BACKFACES 1
 
-	//---- Ambient Occlusion Map ----
-	F_AO_MAP 1
+	//---- Effect Proxies ----
+	F_USE_STATUS_EFFECTS_PROXY 1
 
-	//---- Normal Maps ----
-	F_NORMAL_MAP 1
+	//---- Masks ----
+	F_MASKS_1 1
+	F_MASKS_2 1
 
-	//---- Specular ----
-	F_SPECULAR 1
-
-	//---- Translucent ----
+	//---- Translucency ----
 	F_ALPHA_TEST 1
 
-	//---- Ambient Occlusion Map ----
-	g_flGradientBottom "-372.364"
-	g_flGradientColorMultiplier "1.000"
-	g_flGradientTop "200.000"
-	g_vAmbientOcclusionColor "[0.000000 0.000000 0.000000 0.000000]"
-	g_vGradientBottomColor "[0.000000 0.000000 0.000000 0.000000]"
-	g_vGradientTopColor "[1.000000 1.000000 1.000000 0.000000]"
-	TextureAmbientOcclusionMap "materials/mordred/mordred_ao.tga"
+	//---- Blend To Full ----
+	g_flEnvMapBlendToFull "0.000"
+	g_flMetalnessBlendToFull "0.000"
+	g_flReflectionsTintByBaseBlendToNone "0.000"
+	g_flSelfIllumBlendToFull "0.000"
+	g_flSpecularBlendToFull "0.000"
+	g_flSpecularExponentBlendToFull "0.000"
+
+	//---- Cloak ----
+	g_flCloakBlurAmount "0.005"
+	g_flCloakIntensity "0.850"
+	g_flCloakRefractAmount "0.100"
+	g_flMaterialCloakFactor "0.000"
+	g_vCloakColorTint "[1.000 1.000 1.000]"
 
 	//---- Color ----
-	g_vColorTint "[1.000000 1.000000 1.000000 0.000000]"
+	g_flDiffuseModulationAmount "1.000"
+	g_flTexCoordRotation "0.000"
 	g_vTexCoordOffset "[0.000 0.000]"
 	g_vTexCoordScale "[1.000 1.000]"
 	TextureColor "materials/mordred/mordred.tga"
 
+	//---- Detail 1 ----
+	g_vDetailTexCoordScale "[1.000 1.000]"
+
+	//---- Detail 2 ----
+	g_flDetail2BlendFactor "0.500"
+	TextureDetail2 "materials/default/default_detail2.tga"
+
+	//---- Fresnel ----
+	g_flFresnelModulatesAlpha "0.000"
+	TextureFresnelWarpColor "materials/default/default_fresnelwarpcolor.tga"
+	TextureFresnelWarpRim "materials/models/heroes/sven/sven_fresnelwarprim.tga"
+	TextureFresnelWarpSpec "materials/models/heroes/sven/sven_fresnelwarpspec.tga"
+
+	//---- Lighting ----
+	g_flAmbientScale "0.000"
+	g_flBloomScale "0.000"
+	g_flBloomShift "0.000"
+	g_vBloomColor "[0.000000 0.000000 0.000000 0.000000]"
+
+	//---- Mask 1 ----
+	TextureDetailMask "[1.000000 1.000000 1.000000 0.000000]"
+	TextureDiffuseWarpMask "[1.000000 1.000000 1.000000 0.000000]"
+	TextureMetalnessMask "[0.000000 0.000000 0.000000 0.000000]"
+	TextureSelfIllumMask "[0.500000 0.500000 0.500000 0.000000]"
+
+	//---- Mask 2 ----
+	TextureRimMask "[1.000000 1.000000 1.000000 0.000000]"
+	TextureSpecularExponent "[1.000000 1.000000 1.000000 0.000000]"
+	TextureSpecularMask "[1.000000 1.000000 1.000000 0.000000]"
+	TextureTintByBaseMask "[1.000000 1.000000 1.000000 0.000000]"
+
 	//---- Normal Map ----
-	g_flBumpStrength "1.200"
 	TextureNormal "materials/mordred/mordred_normal.tga"
 
-	//---- Self Illum ----
-	TextureSelfIllumMask "materials/default/default_selfillum.tga"
+	//---- Rim ----
+	g_flRimLightScale "1.000"
+	g_vRimLightColor "[0.917647 0.588235 0.537255 0.000000]"
 
 	//---- Specular ----
-	g_flSpecularBloom "2.020"
-	g_flSpecularIntensity "1.343"
-	TextureBloom "materials/mordred/mordred_specular.tga"
-	TextureReflectance "materials/default/default_refl.tga"
+	g_flSpecularExponent "53.000"
+	g_flSpecularScale "50.000"
+	g_vSpecularColor "[0.960784 0.803922 0.407843 0.000000]"
 
-	//---- Translucent ----
-	g_flAlphaTestReference "0.560"
+	//---- Translucency ----
+	g_flAlphaTestReference "0.500"
 	TextureTranslucency "materials/mordred/mordred_alpha.tga"
 }

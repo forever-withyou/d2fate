@@ -16,6 +16,7 @@ function mordred_q_leap:OnSpellStart()
 	local t = 0
 	
 	local pcJump = ParticleManager:CreateParticle("particles/dev/library/base_dust_hit.vpcf", PATTACH_ABSORIGIN, hCaster)
+    ParticleManager:ReleaseParticleIndex(pcJump)
 	giveUnitDataDrivenModifier(hCaster, hCaster, "jump_pause", 0.5)
 	
 	Timers:CreateTimer(function()
@@ -29,6 +30,9 @@ function mordred_q_leap:OnSpellStart()
 		hCaster:SetAbsOrigin(vPos)
 		return 0.033
 	end)
+
+    hCaster:SwapAbilities("mordred_q_throw", "mordred_q_leap", true, false)
+	hCaster:AddNewModifier(hCaster, self, "modifier_mordred_q", { Duration = 3 })
 end
 
 function mordred_q_leap:OnLand(hCaster)
@@ -37,6 +41,7 @@ function mordred_q_leap:OnLand(hCaster)
 	local fRadius = self:GetSpecialValueFor("radius")
 	
 	local pcHit = ParticleManager:CreateParticle("particles/dev/library/base_dust_hit.vpcf", PATTACH_ABSORIGIN, hCaster)
+    ParticleManager:ReleaseParticleIndex(pcHit)
 	
 	local tTargets = FindUnitsInRadius(hCaster:GetTeam(), hCaster:GetAbsOrigin(), nil, fRadius, DOTA_UNIT_TARGET_TEAM_ENEMY, DOTA_UNIT_TARGET_ALL, 0, FIND_ANY_ORDER, false)
 	
