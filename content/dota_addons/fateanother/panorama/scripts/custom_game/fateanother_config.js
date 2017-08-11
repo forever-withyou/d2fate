@@ -1,6 +1,7 @@
 var g_GameConfig = FindCustomUIRoot($.GetContextPanel());
 var transport = null;
 var bIsMounted = false;
+var bRenderCamera = false;
 
 function OnFateConfigButtonPressed()
 {
@@ -19,7 +20,7 @@ function OnFateConfigButtonPressed()
 
 function OnCameraDistSubmitted()
 {
-    var panel = $("#FateConfigCameraValue");
+    var panel = $("#ConfigCameraValue");
     var number = parseFloat(panel.text);
     if (number > 1900)
     {
@@ -29,6 +30,31 @@ function OnCameraDistSubmitted()
     panel.text = number.toString();
 }
 
+function RenderCamera(){
+    var oSlider = $("#ConfigCameraSlider");
+    var fMin = 1600;
+    var fMax = 1900;
+    var fDistance = fMin + oSlider.value * (fMax - fMin);
+
+    if (fDistance > fMax){
+        fDistance = fMax;
+    }
+
+    GameUI.SetCameraDistance(fDistance);
+
+    if(bRenderCamera === true){
+        $.Schedule(0.016, RenderCamera);
+    }
+};
+
+function OnCamSliderIn(){
+    bRenderCamera = true;
+    RenderCamera();
+};
+
+function OnCamSliderOut(){
+    bRenderCamera = false;
+};
 
 function OnConfig1Toggle()
 {
@@ -57,14 +83,7 @@ function OnConfig4Toggle()
 
 function OnConfig5Toggle()
 {
-    var rootUI = $.GetContextPanel().GetParent();
-    $.Msg(rootUI);
-    var portraitUI_1 = rootUI.FindChildTraverse("HeroPortraitPanel");
-    var portraitUI_2 = rootUI.FindChildTraverse("MasterPortraitPanel");
-    var portraitUI_3 = rootUI.FindChildTraverse("MasterStatusPanel");
-    portraitUI_1.visible = !portraitUI_1.visible;
-    portraitUI_2.visible = !portraitUI_2.visible;
-    portraitUI_3.visible = !portraitUI_3.visible;
+
 }
 
 function OnConfig6Toggle() {
@@ -153,7 +172,7 @@ function RegisterAllMasterUnits(data) {
 
 (function()
 {
-    $("#FateConfigBoard").visible = false;
+   // $("#FateConfigBoard").visible = false;
     $("#FateConfigBGMList").SetSelected(1);
     //GameEvents.Subscribe( "player_chat", PlayerChat);
     GameEvents.Subscribe( "player_bgm_on", TurnBGMOn);

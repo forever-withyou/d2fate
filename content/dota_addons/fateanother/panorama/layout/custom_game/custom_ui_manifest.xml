@@ -95,9 +95,10 @@
         var KDAUI = UIRoot.FindChildTraverse("HUDElements").FindChildTraverse("quickstats").FindChildTraverse("QuickStatsContainer");
         UIRoot.FindChildTraverse("HUDElements").FindChildTraverse("quickstats").style.width = "400px";
         UIRoot.FindChildTraverse("HUDElements").FindChildTraverse("quickstats").style.marginTop = "0px";
-	//KDAUI.style.visibility = "collapse";
-        KDAUI.style.marginTop = "8px";
-        KDAUI.style.marginLeft = "160px";
+	    //KDAUI.style.visibility = "collapse";
+        KDAUI.style.marginTop = "4px";
+        KDAUI.style.marginLeft = "190px";
+        KDAUI.style.backgroundColor = "#00000000"
 
         // backpack
         var backpackUI = UIRoot.FindChildTraverse("HUDElements").FindChildTraverse("lower_hud").FindChildTraverse("center_with_stats").FindChildTraverse("center_block").FindChildTraverse("inventory").FindChildTraverse("inventory_items").FindChildTraverse("InventoryContainer").FindChildTraverse("inventory_backpack_list");
@@ -163,6 +164,7 @@
 	
 	<scripts>
 		<include src="file://{resources}/scripts/custom_game/fateanother_voice.js" />
+		<include src="file://{resources}/scripts/custom_game/fateanother_shop.js" />
 	</scripts>
 	
 	<Panel>
@@ -171,8 +173,6 @@
 		<CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/fateanother_customization.xml" />
 		<CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/fateanother_timer_layout.xml" />
 		<CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/fateanother_portrait.xml" />
-		<CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/fateanother_fatepedia.xml" />
-		<CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/fateanother_config.xml" />
 		<!-- <CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/barebones_attachments.xml" /> -->
 		<CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/fateanother_buff_bar.xml" />
 		<CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/fateanother_combatevent.xml" />
@@ -185,8 +185,8 @@
 		<!-- <CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/inventory.xml" /> -->
 		<!-- <CustomUIElement type="GameInfo" layoutfile="file://{resources}/layout/custom_game/fateanother_game_info.xml" /> -->
 		<CustomUIElement type="HeroSelection" layoutfile="file://{resources}/layout/custom_game/multiteam_hero_select_overlay.xml" />
-                <CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/fateanother_hero_selection.xml" />
-		
+        <CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/fateanother_hero_selection.xml" />
+		<CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/fateanother_options.xml" />
 	</Panel>
 </root>
 

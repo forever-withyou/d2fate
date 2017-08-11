@@ -46,7 +46,14 @@ function CreateFateTalentButton(){
 	var statBranchBG = fateButton.FindChildTraverse("StatBranchBG")
 	statBranchBG.style.visibility = "collapse";
 	
-	fateButton.style.backgroundImage = "url(\"file://{images}/misc/customize.png\")";
+    fateButton.style.backgroundImage = "url(\"file://{images}/misc/customize.png\")";
+    
+    var fateButtonOverlay = $.CreatePanel("Panel", fateButton, "FateTalentButtonOverlay");
+    fateButtonOverlay.style.width = "100%";
+    fateButtonOverlay.style.height = "100%";
+    fateButtonOverlay.style.backgroundImage = "url(\"file://{images}/misc/customize_active.png\")";
+    fateButtonOverlay.style.opacity = "0";
+    fateButtonOverlay.style.transition = "opacity 0.3s ease-in-out 0.0s";
 }
 
 function RemoveChilds(panel)
@@ -107,15 +114,17 @@ function UpdateStatPanel(data)
 
 function OnCustomizeButtonShowTooltip()
 {
-	var panel = GetTalentButton()
-	panel.style.backgroundImage = "url(\"file://{images}/misc/customize_active.png\")";
+    var panel = GetTalentButton();
+    var overlay = panel.FindChildTraverse("FateTalentButtonOverlay");
+    overlay.style.opacity = "1.0";
 	$.DispatchEvent('DOTAShowTextTooltip', panel, "#Fateanother_Customize_Button");
 }
 
 function OnCustomizeButtonHideTooltip(panel)
 {
-	var panel = GetTalentButton()
-	panel.style.backgroundImage = "url(\"file://{images}/misc/customize.png\")";
+    var panel = GetTalentButton();
+    var overlay = panel.FindChildTraverse("FateTalentButtonOverlay");
+    overlay.style.opacity = "0.0";
 	$.DispatchEvent( 'DOTAHideTextTooltip', panel );
 }
 

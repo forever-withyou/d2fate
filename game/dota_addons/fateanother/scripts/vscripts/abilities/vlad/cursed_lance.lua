@@ -2,7 +2,11 @@ vlad_cursed_lance = class({})
 LinkLuaModifier("modifier_cursed_lance", "abilities/vlad/modifier_cursed_lance", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_cursed_lance_bp", "abilities/vlad/modifier_cursed_lance_bp", LUA_MODIFIER_MOTION_NONE)
 
-if not IsServer() then
+if IsClient() then  
+  function vlad_cursed_lance:GetCastRange( vLocation, hTarget)
+    return self:GetSpecialValueFor("aoe")
+  end  
+  
   return
 end
 --combo timer ability swap
@@ -77,25 +81,29 @@ function vlad_cursed_lance:OnSpellStart()
   local caster = self:GetCaster()
   local duration = self:GetSpecialValueFor("duration")
   local hp_cost = self:GetSpecialValueFor("hp_cost")
-
 	local hp_current = caster:GetHealth()
 	local hp_max = caster:GetMaxHealth()
-	hp_current = hp_current - (hp_max * hp_cost)
+  hp_current = hp_current - (hp_max * hp_cost)
+  local modifier = caster:FindModifierByName("modifier_transfusion_bloodpower")
+  local bloodpower = modifier and modifier:GetStackCount() or 0
+  local bleedcounter = caster:GetGlobalBleeds()
 
-	if hp_current > 1 then
-		caster:SetHealth(hp_current)
-	else
-		caster:SetHealth(1)
-	end
+  if caster:IsAlive() then
+  	if hp_current > 1 then
+  		caster:SetHealth(hp_current)
+  	else
+  		caster:SetHealth(1)
+  	end 
 
-  if caster:HasModifier("modifier_transfusion_bloodpower") and not caster:HasModifier("modifier_transfusion_self") and caster.InstantCurseAcquired then
-    self.modifier = caster:AddNewModifier(caster, self, "modifier_cursed_lance_bp",{duration = duration})
-  else
-    self.modifier = caster:AddNewModifier(caster, self, "modifier_cursed_lance",{duration = duration})
+    if caster.InstantCurseAcquired and (bleedcounter + bloodpower) > 19 then
+      self.modifier = caster:AddNewModifier(caster, self, "modifier_cursed_lance_bp",{duration = duration})
+    else
+      self.modifier = caster:AddNewModifier(caster, self, "modifier_cursed_lance",{duration = duration})
+    end
+
+  	self:ComboCheck(caster)
+  	self:InstantCurseSwap(caster,duration)
   end
-
-	self:ComboCheck(caster)
-	self:InstantCurseSwap(caster,duration)
 end
 
 function vlad_cursed_lance:GetCastAnimation()
