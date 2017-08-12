@@ -27,6 +27,7 @@ function mordred_q_slash:OnSpellStart()
 	}
 	
 	local projHit = ProjectileManager:CreateLinearProjectile(tProjectileInfo)
+    hCaster:EmitSound("DOTA_Item.Daedelus.Crit")
 	
 	local pcHit = ParticleManager:CreateParticle("particles/econ/items/sven/sven_ti7_sword/sven_ti7_sword_spell_great_cleave_gods_strength.vpcf", PATTACH_ABSORIGIN, hCaster)
 	ParticleManager:SetParticleControlForward(pcHit, 0, hCaster:GetForwardVector())
@@ -41,9 +42,13 @@ end
 
 function mordred_q_slash:OnProjectileHit(hTarget, vLocation)
 	if not hTarget then return end
+    
 	local hCaster = self:GetCaster()
 	local fDamage = self:GetSpecialValueFor("damage") + hCaster:GetBaseDamageMax() * self:GetSpecialValueFor("ad_scaling")
 	DoDamage(hCaster, hTarget, fDamage, DAMAGE_TYPE_PHYSICAL, 0, self, false)
+
+    local pcBlood = ParticleManager:CreateParticle("particles/generic_gameplay/generic_hit_blood.vpcf", PATTACH_ABSORIGIN, hTarget)
+    ParticleManager:ReleaseParticleIndex(pcBlood)
 end
 
 function mordred_q_slash:OnUpgrade()
@@ -52,6 +57,7 @@ function mordred_q_slash:OnUpgrade()
 	local tAbilities = {
 		"mordred_q_charge",
 		"mordred_q_leap",
+        "mordred_q_throw",
 	}
 	
 	for k, v in pairs(tAbilities) do

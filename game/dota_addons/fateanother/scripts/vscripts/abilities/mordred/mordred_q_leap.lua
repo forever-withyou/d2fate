@@ -12,23 +12,25 @@ function mordred_q_leap:OnSpellStart()
 	local fDistance = vBetween:Length()
 	local vMidpoint = hCaster:GetAbsOrigin() + vBetween:Normalized() * (fDistance / 2)
 	vMidpoint.z = vMidpoint.z + 800
-	local fTravelTime = 0.033 / 0.5
+	local fTravelTime = 0.5
+    local fTick = 0.033
+    local fTickTravel = fTick / fTravelTime
 	local t = 0
 	
 	local pcJump = ParticleManager:CreateParticle("particles/dev/library/base_dust_hit.vpcf", PATTACH_ABSORIGIN, hCaster)
     ParticleManager:ReleaseParticleIndex(pcJump)
-	giveUnitDataDrivenModifier(hCaster, hCaster, "jump_pause", 0.5)
+	giveUnitDataDrivenModifier(hCaster, hCaster, "jump_pause", fTravelTime)
 	
 	Timers:CreateTimer(function()
-		t = t + fTravelTime
+		t = t + fTickTravel
 		if t >= 1 then
 			FindClearSpaceForUnit(hCaster, hCaster:GetAbsOrigin(), true)
 			self:OnLand(hCaster)
-			return
+			return nil
 		end
 		local vPos = QuadBezier(t, vLocation, vMidpoint, vTarget)
 		hCaster:SetAbsOrigin(vPos)
-		return 0.033
+		return fTick
 	end)
 
     hCaster:SwapAbilities("mordred_q_throw", "mordred_q_leap", true, false)
