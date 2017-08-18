@@ -1,3 +1,4 @@
+LinkLuaModifier("modifier_charges", "modifiers/modifier_charges", LUA_MODIFIER_MOTION_NONE)
 SaberAttribute = {
 	"saber_attribute_improve_excalibur",
 	"saber_attribute_improve_instinct",
@@ -111,10 +112,11 @@ AvengerAttribute = {
 DiarmuidAttribute = {
 	"diarmuid_attribute_improve_love_spot",
 	"diarmuid_attribute_minds_eye",
-	"diarmuid_attribute_rosebloom",
+	"diarmuid_attribute_golden_rose_of_mortality",
+	"diarmuid_attribute_crimson_rose_of_exorcism",
 	"diarmuid_attribute_double_spear_strike",
 	"diarmuid_rampant_warrior",
-	attrCount = 4
+	attrCount = 5
 }
 
 IskanderAttribute = {
@@ -299,6 +301,13 @@ function ResetItems(hero)
 	end
 end
 
+function IncrementCharges(hero)
+	if hero:HasModifier("modifier_charges") then
+		local modifier = hero:FindModifierByName("modifier_charges")
+		modifier:OnIntervalThink()
+	end
+end
+
 function OnSeal2Start(keys)
 	local caster = keys.caster
 	local ply = caster:GetPlayerOwner()
@@ -335,6 +344,7 @@ function OnSeal2Start(keys)
 
 	ResetAbilities(hero)
 	ResetItems(hero)
+	IncrementCharges(hero)
 
 	-- Particle
 	hero:EmitSound("DOTA_Item.Refresher.Activate")
@@ -1004,8 +1014,8 @@ function OnProsperityAcquired(keys)
 	--[[
 	master:SetMana(master:GetMana()+20)
 	master2:SetMana(master:GetMana())]]
-	master:SetMaxHealth(master:GetMaxHealth()+2) 
-	master:SetHealth(master:GetHealth()+2)
+	master:SetMaxHealth(master:GetMaxHealth()+3) 
+	master:SetHealth(master:GetHealth()+3)
 	master2:SetMaxHealth(master:GetMaxHealth()) 
 	master2:SetHealth(master:GetHealth())
     local statTable = CreateTemporaryStatTable(hero)

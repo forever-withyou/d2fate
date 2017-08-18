@@ -78,8 +78,8 @@ ROUND_DURATION = 120
 FIRST_BLESSING_PERIOD = 300
 BLESSING_PERIOD = 480
 BLESSING_MANA_REWARD = 15
-SPAWN_POSITION_RADIANT_DM = Vector(-1600, 5820, 320)
-SPAWN_POSITION_DIRE_DM = Vector(2960, -1000, 320)
+SPAWN_POSITION_RADIANT_DM = Vector(-5400, 762, 376)
+SPAWN_POSITION_DIRE_DM = Vector(7200, 4250, 755)
 SPAWN_POSITION_T1_TRIO = Vector(-796,7032,512)
 SPAWN_POSITION_T2_TRIO = Vector(5676,6800,512)
 SPAWN_POSITION_T3_TRIO = Vector(5780,2504,512)
@@ -87,7 +87,7 @@ SPAWN_POSITION_T4_TRIO = Vector(-888,1748,512)
 TRIO_RUMBLE_CENTER = Vector(2436,4132,1000)
 FFA_CENTER = Vector(368,3868,1000)
 mode = nil
-FATE_VERSION = "v1.23"
+FATE_VERSION = "v1.24"
 roundQuest = nil
 IsGameStarted = false
 
@@ -515,7 +515,6 @@ function FateGameMode:OnGameInProgress()
         xpGranter:FindAbilityByName("dummy_unit_passive"):SetLevel(1)
         xpGranter:SetAbsOrigin(dummyLoc)
     end
-
 end
 
 -- Cleanup a player when they leave
@@ -716,9 +715,10 @@ function FateGameMode:OnPlayerChat(keys)
         elseif PlayerResource:GetReliableGold(plyID) < tonumber(goldAmt) and plyID ~= tonumber(pID) and PlayerResource:GetTeam(plyID) == PlayerResource:GetTeam(tonumber(pID)) and tonumber(goldAmt) > 0 then
             -- This elseif condition is for when your gold is below the default 300 or whatever you set, that you send the rest of your gold to teammate.
             local targetHero = PlayerResource:GetPlayer(tonumber(pID)):GetAssignedHero()
-            hero:ModifyGold(-PlayerResource:GetReliableGold(plyID), true , 0)
-            targetHero:ModifyGold(PlayerResource:GetReliableGold(plyID), true, 0)
-            CustomGameEventManager:Send_ServerToTeam(hero:GetTeamNumber(), "fate_gold_sent", {goldAmt=PlayerResource:GetReliableGold(plyID), sender=hero:entindex(), recipent=targetHero:entindex()} )
+            goldAmt = PlayerResource:GetReliableGold(plyID)
+            hero:ModifyGold(-goldAmt, true , 0)
+            targetHero:ModifyGold(goldAmt, true, 0)
+            CustomGameEventManager:Send_ServerToTeam(hero:GetTeamNumber(), "fate_gold_sent", {goldAmt=tonumber(goldAmt), sender=hero:entindex(), recipent=targetHero:entindex()} )
             --GameRules:SendCustomMessage("<font color='#58ACFA'>" .. hero.name .. "</font> sent " .. goldAmt .. " gold to <font color='#58ACFA'>" .. targetHero.name .. "</font>" , hero:GetTeamNumber(), hero:GetPlayerOwnerID())
         end
     end
@@ -1241,9 +1241,9 @@ function FateGameMode:OnHeroInGame(hero)
     GameRules:SendCustomMessage("Servant <font color='#58ACFA'>" .. heroName .. "</font> has been summoned.", 0, 0)
 
     if _G.GameMap == "fate_elim_6v6" or _G.GameMap == "fate_elim_7v7" then
-        if self.nCurrentRound == 0 then
+        if self.nCurrentRound == 0 and _G.CurrentGameState == "FATE_PRE_GAME" then
             giveUnitDataDrivenModifier(hero, hero, "round_pause", 70)
-        elseif self.nCurrentRound >= 1 then
+        else
             giveUnitDataDrivenModifier(hero, hero, "round_pause", 10)
         end
     else
@@ -2458,7 +2458,7 @@ end
 
 function FateGameMode:InitializeRound()
     -- do first round stuff
-    if self.nCurrentRound == 1 then
+    --if self.nCurrentRound == 1 then
         --[[print("[FateGameMode]First round started, initiating 10 minute timer...")
         IsGameStarted = true
         GameRules:SendCustomMessage("#Fate_Game_Begin", 0, 0)
@@ -2479,14 +2479,15 @@ function FateGameMode:InitializeRound()
 
                 return BLESSING_PERIOD
         end})]]
-    end
+    --end
 
     -- Flag game mode as pre round, and display tip
     _G.IsPreRound = true
     CreateUITimer("Pre-Round", PRE_ROUND_DURATION, "pregame_timer")
     --FireGameEvent('cgm_timer_display', { timerMsg = "Pre-Round", timerSeconds = 16, timerEnd = true, timerPosition = 0})
     --DisplayTip()
-    Say(nil, string.format("Round %d will begin in " .. PRE_ROUND_DURATION .. " seconds.", self.nCurrentRound), false)
+    GameRules:SendCustomMessage("Round "..self.nCurrentRound.." will begin in " .. PRE_ROUND_DURATION .. " seconds.", 0, 0)
+    --Say(nil, string.format("Round %d will begin in " .. PRE_ROUND_DURATION .. " seconds.", self.nCurrentRound), false) -- Valve please
 
 
     local msg = {
@@ -2762,7 +2763,7 @@ function FateGameMode:FinishRound(IsTimeOut, winner)
             end
             hero.ServStat:printconsole()
         end)
-        Say(nil, "Red Faction Victory!", false)
+        GameRules:SendCustomMessage("Red Faction Victory!",0,0)
         my_http_post()
         GameRules:SetSafeToLeave( true )
         GameRules:SetGameWinner( DOTA_TEAM_GOODGUYS )
@@ -2777,7 +2778,7 @@ function FateGameMode:FinishRound(IsTimeOut, winner)
             end
             hero.ServStat:printconsole()
         end)
-        Say(nil, "Black Faction Victory!", false)
+        GameRules:SendCustomMessage("Black Faction Victory!",0,0)
         my_http_post()
         GameRules:SetSafeToLeave( true )
         GameRules:SetGameWinner( DOTA_TEAM_BADGUYS )
@@ -2847,13 +2848,13 @@ function GetRespawnPos(playerHero, currentRound, index)
     -- [0] [1]
     -- [2] [3]
     -- [4] [x] x is default spawn
-    local radiantOffset = vColumn * -2 + vRow * -1
+    local radiantOffset = vColumn * -1 + vRow * -.5
     local radiantSpawn = SPAWN_POSITION_RADIANT_DM + radiantOffset
 
     -- [0] [1]
     -- [2] [x]
     -- [4] [5] x is default spawn
-    local direOffset = vColumn * -1 + vRow * -1
+    local direOffset = vColumn * 1 + vRow * -.5
     local direSpawn = SPAWN_POSITION_DIRE_DM + direOffset
 
     local row = index % 2

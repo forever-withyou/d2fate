@@ -143,7 +143,7 @@ function OnMBStart(keys)
 
 	for k,v in pairs(targets) do
 	    DoDamage(caster, v, keys.Damage , DAMAGE_TYPE_MAGICAL, 0, keys.ability, false)
-	    v:AddNewModifier(caster, v, "modifier_stunned", {Duration = 0.1})
+	    v:AddNewModifier(caster, v, "modifier_stunned", {Duration = 0.2})
 	end
 
 	ability:ApplyDataDrivenModifier( caster, caster, "modifier_mana_burst_VFX", {} )
@@ -284,17 +284,20 @@ function OnVortigernHit(keys)
 	local target = keys.target
 	local ply = caster:GetPlayerOwner()
 	local damage = keys.Damage
-	print("Vortigern hit")
+	local StunDuration = keys.StunDuration
+	--print("Vortigern hit")
 	damage = damage * (80 + vortigernCount * 5)/100
 	if caster.IsFerocityImproved then 
 		damage = damage + 100
-		keys.StunDuration = keys.StunDuration + 0.3
+		StunDuration = StunDuration + 0.3
 	end
+	StunDuration = StunDuration * (80 + vortigernCount * 5)/100
 	if target.IsVortigernHit ~= true then
 		target.IsVortigernHit = true
 		Timers:CreateTimer(0.54, function() target.IsVortigernHit = false return end)
 		DoDamage(caster, target, damage, DAMAGE_TYPE_MAGICAL, 0, keys.ability, false)
-		target:AddNewModifier(caster, caster, "modifier_stunned", {Duration = keys.StunDuration})
+		target:AddNewModifier(caster, caster, "modifier_stunned", {Duration = StunDuration})
+		print(StunDuration)
 	end
 
 end
@@ -393,10 +396,10 @@ function OnDexStart(keys)
 		end
 	end)
 
-	local casterFacing = caster:GetForwardVector()
 	Timers:CreateTimer(2.75, function()
 		if caster:IsAlive() then
 			-- Create Particle for projectile
+			local casterFacing = caster:GetForwardVector()
 			local dummy = CreateUnitByName("dummy_unit", caster:GetAbsOrigin(), false, caster, caster, caster:GetTeamNumber())
 			dummy:FindAbilityByName("dummy_unit_passive"):SetLevel(1)
 			dummy:SetForwardVector(casterFacing)

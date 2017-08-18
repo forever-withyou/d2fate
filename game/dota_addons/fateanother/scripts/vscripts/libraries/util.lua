@@ -35,6 +35,7 @@ softdispellable = {
     "modifier_atalanta_last_spurt",
     "modifier_cursed_lance",
     "modifier_battle_continuation_heal",
+    "modifier_argos_armor",
 }
 
 strongdispellable = {
@@ -72,6 +73,7 @@ strongdispellable = {
     "modifier_atalanta_last_spurt",
     "modifier_cursed_lance",
     "modifier_battle_continuation_heal",
+    "modifier_argos_armor",
 
 
     -- Strong Dispelable
@@ -95,7 +97,8 @@ revokes = {
     "revoked",
     "modifier_command_seal_2",
     "modifier_command_seal_3",
-    "modifier_command_seal_4"
+    "modifier_command_seal_4",
+    "round_pause"
 }
 
 locks = {
@@ -385,6 +388,7 @@ function DoCompositeDamage(source, target, dmg, dmg_type, dmg_flag, abil, isLoop
 end
 
 function ApplyAirborne(source, target, duration)
+    if target:HasModifier("modifier_wind_protection_passive") then return end
     target:AddNewModifier(source, source, "modifier_stunned", {Duration = duration})
     --if target:GetName() == "npc_dota_hero_legion_commander" and target:HasModifier("modifier_avalon") then return end
     --[[local ascendCounter = 0
@@ -406,6 +410,7 @@ function ApplyAirborne(source, target, duration)
 end
 
 function ApplyAirborneOnly(target, knockupSpeed, duration, Acc)
+    if target:HasModifier("modifier_wind_protection_passive") then return end
     if target:GetName() == "npc_dota_hero_legion_commander" and target:HasModifier("modifier_avalon") then return end
 
     local knockupAcc = knockupSpeed/duration * 2
@@ -856,6 +861,21 @@ function CalculateDamagePreReduction(eDamageType, fDamage, hUnit)
 	return fDamage
 end
 
+function CalculateDamagePostReduction(eDamageType, fDamage, hUnit)
+	if eDamageType == DAMAGE_TYPE_PHYSICAL then
+		local fArmor = hUnit:GetPhysicalArmorValue()
+		local multiplier = 1 - 0.06 * fArmor / (1 + 0.06 * math.abs(fArmor))
+		return fDamage * multiplier
+	end
+	
+	if eDamageType == DAMAGE_TYPE_MAGICAL then
+		local fMagicRes = hUnit:GetMagicalArmorValue()
+		return fDamage * (1 - fMagicRes)
+	end
+	
+	return fDamage
+end
+
 
 function ReduceCooldown(ability, reduction)
     local remainingCD = ability:GetCooldownTimeRemaining() 
@@ -979,7 +999,9 @@ function DoDamage(source, target , dmg, dmg_type, dmg_flag, abil, isLoop)
         end
         --print("Before reductions", dmg)
         sourceHero.ServStat:doDamageBeforeReduction(dmg)
-        targetHero.ServStat:takeDamageBeforeReduction(dmg)
+        if not targetHero:IsIllusion() then -- band aid for NR's shapeshift.
+	        targetHero.ServStat:takeDamageBeforeReduction(dmg)
+	    end
     end
     -- END
 
@@ -1131,6 +1153,8 @@ function DoDamage(source, target , dmg, dmg_type, dmg_flag, abil, isLoop)
             ability = abil
         }
 
+
+
         
         -- if target is linked, distribute damages 
         if target:HasModifier("modifier_share_damage")
@@ -1149,11 +1173,12 @@ function DoDamage(source, target , dmg, dmg_type, dmg_flag, abil, isLoop)
             elseif dmg_type == DAMAGE_TYPE_MAGICAL then
                 damageToAllies = dmgtable.damage * (1-MR)
             end]]
-            damageToAllies = damageToAllies/#target.linkTable * (1 + 0.1 * #target.linkTable - (#target.linkTable == 1 and 1 or 0) * 0.1) --damage/person is now 100/60/43.3/35/30 after instead of 100/50/33.3/25/20
-            dmgtable.damage = dmgtable.damage/#target.linkTable * (1 + 0.1 * #target.linkTable - (#target.linkTable == 1 and 1 or 0) * 0.1)
+            damageToAllies = damageToAllies/#target.linkTable -- * (1 + 0.1 * #target.linkTable - (#target.linkTable == 1 and 1 or 0) * 0.1) --damage/person is now 100/60/43.3/35/30 after instead of 100/50/33.3/25/20
+            dmgtable.damage = dmgtable.damage/#target.linkTable -- * (1 + 0.1 * #target.linkTable - (#target.linkTable == 1 and 1 or 0) * 0.1)
             --print(damageToAllies, dmgtable.damage, (1 + 0.1 * #target.linkTable - (#target.linkTable == 1 and 1 or 0) * 0.1))
             -- Loop through linked heroes
             for i=#target.linkTable,1,-1 do
+                local hLinkTarget = target.linkTable[i]
                 -- do ApplyDamage if it's primary target since the shield processing is already done
                 if target.linkTable[i] == target then
                     --print("Damage dealt to primary target : " .. dmgtable.damage .. " dealt by " .. dmgtable.attacker:GetName())
@@ -1174,9 +1199,14 @@ function DoDamage(source, target , dmg, dmg_type, dmg_flag, abil, isLoop)
 
                 -- for other linked targets, we need DoDamage
                 else
-                    if target.linkTable[i] ~= nil then 
-                        --print("Damage dealt to " .. target.linkTable[i]:GetName() .. " by link : " .. damageToAllies )
-                        DoDamage(source, target.linkTable[i], damageToAllies,  DAMAGE_TYPE_MAGICAL, 0, abil, true)
+                    if target.linkTable[i] ~= nil then
+                        if hLinkTarget:GetHealth() >= CalculateDamagePostReduction(DAMAGE_TYPE_MAGICAL, damageToAllies, hLinkTarget) then
+                            DoDamage(source, hLinkTarget, damageToAllies,  DAMAGE_TYPE_MAGICAL, 0, abil, true)
+                        else
+                            hLinkTarget:SetHealth(1)
+                            hLinkTarget:RemoveModifierByName("modifier_share_damage")
+                            RemoveHeroFromLinkTables(hLinkTarget)
+                        end
                     end 
                 end
             end

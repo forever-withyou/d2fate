@@ -1,3 +1,4 @@
+LinkLuaModifier("modifier_workshop_recall", "abilities/caster/modifier_workshop_recall", LUA_MODIFIER_MOTION_NONE)
 territoryAbilHandle = nil -- Ability handle for Create Workshop
 ATTRIBUTE_HG_INT_MULTIPLIER = 0
 
@@ -63,15 +64,15 @@ function OnTerritoryCreated(keys)
 
 	-- Do special handling for attribute
 	Timers:CreateTimer(5, function() --because it takes 5 seconds for territory to be built
-		if hero.IsTerritoryImproved and caster.Territory:IsAlive() then 
+		if hero.IsTerritoryImproved and hero.IsTerritoryPresent and not caster.Territory:IsNull() then 
 			truesightdummy = CreateUnitByName("sight_dummy_unit", caster.Territory:GetAbsOrigin(), false, keys.caster, keys.caster, keys.caster:GetTeamNumber())
 			truesightdummy:AddNewModifier(caster, caster, "modifier_item_ward_true_sight", {true_sight_range = 600}) 
 			local unseen = truesightdummy:FindAbilityByName("dummy_unit_passive")
 			unseen:SetLevel(1)
 			Timers:CreateTimer(function() 
-				if not caster.Territory:IsAlive() then 
+				if not hero.IsTerritoryPresent then -- and not truesightdummy:IsNull() then 
 					truesightdummy:RemoveSelf()
-					return 
+					return
 				else
 					truesightdummy:SetAbsOrigin(caster.Territory:GetAbsOrigin())
 					return 1.0
@@ -80,8 +81,8 @@ function OnTerritoryCreated(keys)
 
 			-- Give out mana regen for nearby allies
 			Timers:CreateTimer(function()
-				if not caster.Territory:IsAlive() then return end
-			    local targets = FindUnitsInRadius(caster:GetTeam(), caster.Territory:GetOrigin(), nil, 500, DOTA_UNIT_TARGET_TEAM_FRIENDLY, DOTA_UNIT_TARGET_ALL, 0, FIND_ANY_ORDER, false)
+				if caster.Territory:IsNull() or not hero.IsTerritoryPresent then return end
+			  local targets = FindUnitsInRadius(caster:GetTeam(), caster.Territory:GetOrigin(), nil, 500, DOTA_UNIT_TARGET_TEAM_FRIENDLY, DOTA_UNIT_TARGET_ALL, 0, FIND_ANY_ORDER, false)
 				for k,v in pairs(targets) do
 			        --if v:GetUnitName() ~= "caster_5th_territory" then 
 			         	keys.ability:ApplyDataDrivenModifier(caster, v, "modifier_territory_mana_regen", {Duration = 1.0}) 
@@ -418,7 +419,6 @@ function OnSummonDragon(keys)
 	drag:AddNewModifier(caster, nil, "modifier_kill", {duration = 60})
 
 	drag:SetMaxHealth(keys.Health)
-	drag:SetBaseMaxHealth(keys.Health)
 	drag:SetHealth(keys.Health)
 	drag:SetBaseDamageMax(keys.Damage)
 	drag:SetBaseDamageMin(keys.Damage)
@@ -428,7 +428,6 @@ function OnSummonDragon(keys)
 		-- Bonus properties(give it 0.1 sec delay just in case)
 		local newHealth = drag:GetMaxHealth() + hero:GetIntellect()*keys.HealthRatio
 		drag:SetMaxHealth(newHealth)
-		drag:SetBaseMaxHealth(newHealth)
 		drag:SetHealth(newHealth)
 		drag:SetBaseMoveSpeed(drag:GetBaseMoveSpeed() + hero:GetIntellect()*keys.MSRatio)
 	end)
@@ -536,31 +535,11 @@ function OnTerritoryImmobilize(keys)
 end
 
 function OnTerritoryRecall(keys)
-	local caster = keys.caster
-	local target = caster:GetOwnerEntity() 
-	if target:GetName() == "npc_dota_hero_crystal_maiden" then
-        local pc = ParticleManager:CreateParticle("particles/units/heroes/hero_wisp/wisp_relocate_channel.vpcf", PATTACH_ABSORIGIN_FOLLOW, target)
-		keys.ability:ApplyDataDrivenModifier(caster, target, "modifier_recall", {})
-        local modifier = target:FindModifierByName("modifier_recall")
-        modifier.Particle = pc
+	local hCaster = keys.caster
+	local hTarget = hCaster:GetOwnerEntity()
+    local hAbility = keys.ability
 
-		caster.IsRecallCanceled = false
-		Timers:CreateTimer(3.0, function()  
-		if not caster.IsRecallCanceled and caster:IsAlive() and IsInSameRealm(target:GetAbsOrigin(), caster:GetAbsOrigin()) then
-            local pcTeleportOut = ParticleManager:CreateParticle("particles/custom/caster/caster_recall_out.vpcf", PATTACH_CUSTOMORIGIN, target)
-            ParticleManager:SetParticleControl(pcTeleportOut, 0, target:GetAbsOrigin())
-            ParticleManager:ReleaseParticleIndex(pcTeleportOut)
-
-			target:SetAbsOrigin(caster:GetAbsOrigin())
-			FindClearSpaceForUnit(target, target:GetAbsOrigin(), true)
-
-            ParticleManager:DestroyParticle(pc, false)
-            ParticleManager:ReleaseParticleIndex(pc)
-            local pcTeleportIn = ParticleManager:CreateParticle("particles/units/heroes/hero_wisp/wisp_relocate_teleport.vpcf", PATTACH_ABSORIGIN, target)
-            ParticleManager:ReleaseParticleIndex(pcTeleportIn)
-		end
-		return end)
-	end
+    hTarget:AddNewModifier(hCaster, hAbility, "modifier_workshop_recall", { Duration = 3 })
 end
 
 function OnRecallCanceled(keys)
@@ -987,20 +966,21 @@ function OnFirewallStart(keys)
     for k,v in pairs(targets) do
     	if v:GetName() ~= "npc_dota_ward_base" then
 	    	DoDamage(caster, v, keys.Damage, DAMAGE_TYPE_MAGICAL, 0, keys.ability, false)
-
-			giveUnitDataDrivenModifier(caster, v, "drag_pause", 0.5)
-			local pushback = Physics:Unit(v)
-			v:PreventDI()
-			v:SetPhysicsFriction(0)
-			v:SetPhysicsVelocity((v:GetAbsOrigin() - casterPos):Normalized() * keys.Pushback * 2)
-			v:SetNavCollisionType(PHYSICS_NAV_NOTHING)
-			v:FollowNavMesh(false)
-			Timers:CreateTimer(0.5, function()  
-				print("kill it")
-				v:PreventDI(false)
-				v:SetPhysicsVelocity(Vector(0,0,0))
-				v:OnPhysicsFrame(nil)
-			return end)
+	    	if not v:HasModifier("modifier_wind_protection_passive") then
+				giveUnitDataDrivenModifier(caster, v, "drag_pause", 0.5)
+				local pushback = Physics:Unit(v)
+				v:PreventDI()
+				v:SetPhysicsFriction(0)
+				v:SetPhysicsVelocity((v:GetAbsOrigin() - casterPos):Normalized() * keys.Pushback * 2)
+				v:SetNavCollisionType(PHYSICS_NAV_NOTHING)
+				v:FollowNavMesh(false)
+				Timers:CreateTimer(0.5, function()  
+					print("kill it")
+					v:PreventDI(false)
+					v:SetPhysicsVelocity(Vector(0,0,0))
+					v:OnPhysicsFrame(nil)
+				return end)
+			end
 		end
 	end
 end
