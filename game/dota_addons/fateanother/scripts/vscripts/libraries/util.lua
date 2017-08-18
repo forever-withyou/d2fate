@@ -95,7 +95,8 @@ revokes = {
     "revoked",
     "modifier_command_seal_2",
     "modifier_command_seal_3",
-    "modifier_command_seal_4"
+    "modifier_command_seal_4",
+    "round_pause"
 }
 
 locks = {
@@ -979,7 +980,9 @@ function DoDamage(source, target , dmg, dmg_type, dmg_flag, abil, isLoop)
         end
         --print("Before reductions", dmg)
         sourceHero.ServStat:doDamageBeforeReduction(dmg)
-        targetHero.ServStat:takeDamageBeforeReduction(dmg)
+        if not targetHero:IsIllusion() then -- band aid for NR's shapeshift.
+	        targetHero.ServStat:takeDamageBeforeReduction(dmg)
+	    end
     end
     -- END
 
