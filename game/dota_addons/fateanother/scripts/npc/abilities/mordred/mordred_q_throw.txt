@@ -7,6 +7,9 @@
         "AbilityTextureName"                            "custom/true_assassin_dirk"
 
         "AbilityBehavior"                               "DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+        "AbilityUnitTargetTeam"							"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"							"DAMAGE_TYPE_PHYSICAL"
+        "SpellImmunityType"                             "SPELL_IMMUNITY_ENEMIES_YES"
 
         "AbilityCastAnimation"                          "ACT_DOTA_ATTACK"
         "AnimationPlaybackRate"                         "2"
@@ -17,12 +20,21 @@
         
         "AbilityCastPoint"                              "0.1"
         "AbilityCastRange"                              "1200"
-        "AbilityManaCost"                               "100"
+        "AbilityManaCost"                               "250"
         "AbilityCooldown"                               "15"
         
         "precache"
         {
             "particle"                                  "particles/custom/mordred/sword.vpcf"
+        }
+
+        "AbilitySpecial"
+        {
+            "01"
+            {
+                "var_type"                              "FIELD_INTEGER"
+                "damage"                                "300 350 400 450 500"
+            }
         }
     }
 }

@@ -1,11 +1,7 @@
 // Dota Heroes File
 
 // Mordred abilities
-#base "abilities/mordred/mordred_q_charge.txt"
-#base "abilities/mordred/mordred_q_leap.txt"
-#base "abilities/mordred/mordred_q_slash.txt"
-#base "abilities/mordred/mordred_q_throw.txt"
-#base "abilities/mordred/mordred_w.txt"
+#base "abilities/mordred/mordred_abilities.txt"
 
 // Vlad abilities
 #base "abilities/vlad/vlad_abilities.txt"

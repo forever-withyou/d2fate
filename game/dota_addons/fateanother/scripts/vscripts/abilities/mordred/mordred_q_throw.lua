@@ -44,7 +44,7 @@ function mordred_q_throw:OnProjectileHit(hTarget, vLocation)
         self:Charge(vLocation)
     else
         local hCaster = self:GetCaster()
-        DoDamage(hCaster, hTarget, 400, DAMAGE_TYPE_PHYSICAL, 0, self, false)
+        DoDamage(hCaster, hTarget, self:GetSpecialValueFor("damage"), DAMAGE_TYPE_PHYSICAL, 0, self, false)
     end
 end
 

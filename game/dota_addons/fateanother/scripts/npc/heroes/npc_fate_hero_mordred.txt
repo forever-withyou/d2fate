@@ -11,7 +11,7 @@
 		"Ability1"									"mordred_q_slash"
 		"Ability2"									"mordred_w"
 		"Ability3"									"mordred_e"
-		"Ability4"									"mordred_d"
+		"Ability4"									"fate_empty5"
 		"Ability5"									"fate_empty1"
 		"Ability6"									"mordred_r"
 		"Ability7"									"presence_detection_passive"

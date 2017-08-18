@@ -11,8 +11,12 @@
 		"LevelsBetweenUpgrades"							"1"
 		
 		"AbilityBehavior"								"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
-		"AbilityCastPoint"								"0"
-		"AbilityCooldown"								"12"
+        "AbilityUnitTargetTeam"							"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"							"DAMAGE_TYPE_PHYSICAL"
+        "SpellImmunityType"                             "SPELL_IMMUNITY_ENEMIES_YES"
+
+		"AbilityCastPoint"								"0.3"
+		"AbilityCooldown"								"0"
 		"AbilityManaCost"								"200"
 		"AbilityCastRange"								"600"
 
