@@ -13,8 +13,8 @@
 		"LevelsBetweenUpgrades"							"1"
 		
 		"AbilityCastPoint"								"0.0"
-		
 		"AbilityCooldown"								"20"
+        "AbilityManaCost"                               "200"
 		
 		"AbilitySpecial"
 		{

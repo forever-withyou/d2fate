@@ -1,0 +1,7 @@
+#base "mordred_q_charge.txt"
+#base "mordred_q_leap.txt"
+#base "mordred_q_slash.txt"
+#base "mordred_q_throw.txt"
+#base "mordred_w.txt"
+#base "mordred_e.txt"
+#base "mordred_r.txt"

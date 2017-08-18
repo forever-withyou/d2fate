@@ -6,14 +6,55 @@
         "ScriptFile"                                    "abilities/mordred/mordred_e"
         "AbilityTextureName"                            "custom/saber_alter_mana_burst"
         
-        "AbilityBehavior"                               "DOTA_ABILITY_BEHAVIOR_UNIT_TARGET"
+        "AbilityBehavior"                               "DOTA_ABILITY_BEHAVIOR_UNIT_TARGET | DOTA_ABILITY_BEHAVIOR_CHANNELLED"
+        "AbilityUnitTargetTeam"                         "DOTA_UNIT_TARGET_TEAM_BOTH"
+        "AbilityUnitTargetType"                         "DOTA_UNIT_TARGET_HERO"
+        "SpellImmunityType"                             "SPELL_IMMUNITY_ENEMIES_YES"
+        "SpellDispellableType"                          "SPELL_DISPELLABLE_YES"
         
         "MaxLevel"                                      "5"
-        "RequiredLevel"                                 "3"
+        "RequiredLevel"                                 "1"
         "LevelsBetweenUpgrades"                         "2"
         
-        "AbilityCastPoint"                              "0.0"
-        "AbilityManaCost"                               "100"
+        "AbilityCastPoint"                              "0.5"
+        "AbilityCastRange"                              "500"
+        "AbilityCastRangeBuffer"                        "300"
+        "AbilityManaCost"                               "400"
         "AbilityCooldown"                               "15"
+        "AbilityChannelTime"                            "10.0"
+
+        "precache"
+        {
+            "particle"                                  "particles/units/heroes/hero_pugna/pugna_life_drain.vpcf"
+        }
+
+        "AbilitySpecial"
+        {
+            "01"
+            {
+                "var_type"                              "FIELD_INTEGER"
+                "passive_damage"                        "5 10 15 20 25"
+            }
+            "02"
+            {
+                "var_type"                              "FIELD_INTEGER"
+                "passive_mana"                          "50 100 150 200 250"
+            }
+            "03"
+            {
+                "var_type"                              "FIELD_INTEGER"
+                "max_channel"                           "10"
+            }
+            "04"
+            {
+                "var_type"                               "FIELD_INTEGER"
+                "duration"                               "4 5 6 7 8"
+            }
+            "05"
+            {
+                "var_type"                              "FIELD_INTEGER"
+                "aug_damage_bonus"                      "2 4 6 8 10"
+            }
+        }
     }
 }
