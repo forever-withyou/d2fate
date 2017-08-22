@@ -1,4 +1,5 @@
 mordred_q_throw = class({})
+require('abilities/mordred/mordred_augbonus')
 
 function mordred_q_throw:OnSpellStart()
     local hCaster = self:GetCaster()
@@ -44,7 +45,9 @@ function mordred_q_throw:OnProjectileHit(hTarget, vLocation)
         self:Charge(vLocation)
     else
         local hCaster = self:GetCaster()
-        DoDamage(hCaster, hTarget, self:GetSpecialValueFor("damage"), DAMAGE_TYPE_PHYSICAL, 0, self, false)
+        local fDamage = self:GetSpecialValueFor("damage")
+        DoDamage(hCaster, hTarget, fDamage, DAMAGE_TYPE_PHYSICAL, 0, self, false)
+        MordredOverchargeDamage(hCaster, hTarget, fDamage, self)
     end
 end
 
