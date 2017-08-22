@@ -1,4 +1,5 @@
 mordred_q_leap = class({})
+require('abilities/mordred/mordred_augbonus')
 
 function QuadBezier(t, p1, p2, p3)
 	return ((1 - t)^2 * p1) + (2 * (1 - t) * t * p2) + t^2 * p3 
@@ -49,6 +50,7 @@ function mordred_q_leap:OnLand(hCaster)
 	
 	for k, v in pairs(tTargets) do
 		DoDamage(hCaster, v, fDamage, DAMAGE_TYPE_PHYSICAL, 0, self, false)
+        MordredOverchargeDamage(hCaster, v, fDamage, self)
 		v:AddNewModifier(hCaster, self, "modifier_stunned", { Duration = fStun })
 	end
 end

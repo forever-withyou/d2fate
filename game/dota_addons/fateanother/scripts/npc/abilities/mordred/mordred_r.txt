@@ -15,5 +15,11 @@
         "MaxLevel"                                      "5"
         "RequiredLevel"                                 "1"
         "LevelsBetweenUpgrades"                         "2"
+        
+        "AbilityCastPoint"                              "0.2"
+        "AbilityCastRange"                              "1200"
+        "AbilityManaCost"                               "800"
+        "AbilityCooldown"                               "45"
+        "AbilityChannelTime"                            "3.0"
     }
 }

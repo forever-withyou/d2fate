@@ -1,5 +1,6 @@
 mordred_q_charge = class({})
 LinkLuaModifier("modifier_mordred_charge_slow", "abilities/mordred/modifier_mordred_charge_slow", LUA_MODIFIER_MOTION_NONE)
+require('abilities/mordred/mordred_augbonus')
 
 function mordred_q_charge:OnSpellStart()
 	local hCaster = self:GetCaster()
@@ -128,4 +129,5 @@ function mordred_q_charge:Knockback(hCaster, hTarget)
 	
 	hTarget:AddNewModifier(hCaster, self, "modifier_mordred_charge_slow", { Duration = self:GetSpecialValueFor("slow_duration") })
 	DoDamage(hCaster, hTarget, fDamage, DAMAGE_TYPE_PHYSICAL, 0, self, false)
+    MordredOverchargeDamage(hCaster, hTarget, fDamage, self)
 end

@@ -1,5 +1,6 @@
 mordred_q_slash = class({})
 LinkLuaModifier("modifier_mordred_q", "abilities/mordred/modifier_mordred_q", LUA_MODIFIER_MOTION_NONE)
+require('abilities/mordred/mordred_augbonus')
 
 function mordred_q_slash:OnSpellStart()
 	local hCaster = self:GetCaster()
@@ -46,6 +47,8 @@ function mordred_q_slash:OnProjectileHit(hTarget, vLocation)
 	local hCaster = self:GetCaster()
 	local fDamage = self:GetSpecialValueFor("damage") + hCaster:GetBaseDamageMax() * self:GetSpecialValueFor("ad_scaling")
 	DoDamage(hCaster, hTarget, fDamage, DAMAGE_TYPE_PHYSICAL, 0, self, false)
+
+    MordredOverchargeDamage(hCaster, hTarget, fDamage, self)
 
     local pcBlood = ParticleManager:CreateParticle("particles/generic_gameplay/generic_hit_blood.vpcf", PATTACH_ABSORIGIN, hTarget)
     ParticleManager:ReleaseParticleIndex(pcBlood)

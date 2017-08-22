@@ -8,9 +8,18 @@ function mordred_w:OnSpellStart()
     local fRange = self:GetSpecialValueFor("dash_range")
     self:EndCooldown()
 
+    if hCaster:HasModifier("modifier_mordred_overcharge") then
+        local hModifier = hCaster:FindModifierByName("modifier_mordred_overcharge")
+        local iExtraDashes = math.floor( hModifier.fMana / 500 )
+        iDashes = iDashes + iExtraDashes
+
+        local fExtraRange = hModifier.fMana / 5
+        fRange = fRange + fExtraRange
+    end
+
     local hModifier = hCaster:AddNewModifier(hCaster, self, "modifier_mordred_w_active", { Duration = 5 })
     local iStacks = hModifier:GetStackCount()
-    if iStacks == iDashes then
+    if iStacks >= iDashes then
         hModifier:Destroy()
     end
 
