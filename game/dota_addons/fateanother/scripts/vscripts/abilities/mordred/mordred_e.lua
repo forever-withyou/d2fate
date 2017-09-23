@@ -8,31 +8,26 @@ end
 
 function mordred_e:OnSpellStart()
     local hCaster = self:GetCaster()
-    local hTarget = self:GetCursorTarget()
     local fDrain = self:GetSpecialValueFor("drain")
 
     self.fDrain = fDrain
     self.fDrained = 0
     self.fDrainTime = 0
 
-    local pcDrain = ParticleManager:CreateParticle("particles/units/heroes/hero_pugna/pugna_life_drain.vpcf", PATTACH_ABSORIGIN_FOLLOW, hCaster)
-    ParticleManager:SetParticleControlEnt(pcDrain, 0, hCaster, PATTACH_POINT_FOLLOW, "attach_righthand", hCaster:GetAbsOrigin(), true)
-    ParticleManager:SetParticleControlEnt(pcDrain, 1, hTarget, PATTACH_POINT_FOLLOW, "attach_hitloc", hTarget:GetAbsOrigin(), true)
+    local pcDrain = ParticleManager:CreateParticle("particles/units/heroes/hero_stormspirit/stormspirit_ball_lightning_trail_base_elec.vpcf", PATTACH_ABSORIGIN_FOLLOW, hCaster)
     self.pcDrain = pcDrain
 end
 
 function mordred_e:OnChannelThink(fInterval)
     local hCaster = self:GetCaster()
-    local hTarget = self:GetCursorTarget()
     local fDrain = self.fDrain * fInterval
 
-    if hTarget:GetMana() <= fDrain or hCaster:GetMana() >= hCaster:GetMaxMana() then
+    if hCaster:GetMana() <= 10 then
         self:EndChannel(false)
         return
     end
 
-    hTarget:SpendMana(fDrain, self)
-    hCaster:GiveMana(fDrain)
+    hCaster:SpendMana(fDrain, self)
     self.fDrained = self.fDrained + fDrain
     self.fDrainTime = self.fDrainTime + fInterval
 end
