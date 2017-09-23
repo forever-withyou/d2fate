@@ -1,7 +1,7 @@
 modifier_mordred_overcharge = class({})
 
 local tParams = {
-    sEffectName = "particles/generic_gameplay/rune_doubledamage.vpcf",
+    sEffectName = "particles/econ/items/juggernaut/jugg_arcana/juggernaut_arcana_body_ambient_flame.vpcf",
     eEffectAttachType = PATTACH_ABSORIGIN_FOLLOW,
     tProperties = {
         MODIFIER_PROPERTY_MAGICAL_RESISTANCE_BONUS,

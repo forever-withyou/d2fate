@@ -2,6 +2,7 @@ mordred_r = class({})
 
 function mordred_r:OnSpellStart()
     self.fRange = 0
+    self.tHitTargets = {}
 end
 
 function mordred_r:OnChannelThink(fInterval)
@@ -26,6 +27,11 @@ function mordred_r:Dash()
 
         local vGroundPos = GetGroundPosition(vNewPos, hCaster)
         hCaster:SetAbsOrigin(vGroundPos)
+
+        local tTargets = FindUnitsInLine(hCaster:GetTeam(), vNewPos, vNewPos + hCaster:GetRightVector() * 400, nil, 100, DOTA_UNIT_TARGET_TEAM_ENEMY, DOTA_UNIT_TARGET_ALL, 0)
+        for k, v in pairs(tTargets) do
+            print(v:GetName())
+        end
 
         if self.fRange <= 64 then
             return nil

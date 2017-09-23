@@ -6,11 +6,7 @@
         "ScriptFile"                                    "abilities/mordred/mordred_e"
         "AbilityTextureName"                            "custom/saber_alter_mana_burst"
         
-        "AbilityBehavior"                               "DOTA_ABILITY_BEHAVIOR_UNIT_TARGET | DOTA_ABILITY_BEHAVIOR_CHANNELLED"
-        "AbilityUnitTargetTeam"                         "DOTA_UNIT_TARGET_TEAM_BOTH"
-        "AbilityUnitTargetType"                         "DOTA_UNIT_TARGET_HERO"
-        "SpellImmunityType"                             "SPELL_IMMUNITY_ENEMIES_YES"
-        "SpellDispellableType"                          "SPELL_DISPELLABLE_YES"
+        "AbilityBehavior"                               "DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_CHANNELLED"
         
         "MaxLevel"                                      "5"
         "RequiredLevel"                                 "1"
